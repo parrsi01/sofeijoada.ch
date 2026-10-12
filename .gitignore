@@ -57,3 +57,6 @@ output/playwright/
 .DS_Store
 .idea/
 .vscode/
+
+# Private deployment records and host settings
+.private-deployment/
