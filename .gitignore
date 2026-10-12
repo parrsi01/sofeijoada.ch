@@ -23,14 +23,26 @@ instance/
 .env
 .env.*
 .flaskenv
+.netrc
+.pypirc
+credentials.json
+credentials.toml
+secrets.json
+secrets.toml
 *.pem
 *.key
 *.p12
 *.pfx
 *.crt
 *.cer
+*.jks
+*.keystore
+*.p8
+*.ppk
 id_rsa
 id_ed25519
+id_ecdsa
+id_dsa
 
 # Build output
 build/
