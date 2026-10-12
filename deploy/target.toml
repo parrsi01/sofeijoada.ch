@@ -1,0 +1,6 @@
+[host]
+provider = "Hetzner"
+
+[site]
+slug = "sofeijoada"
+domain = "sofeijoada.ch"
