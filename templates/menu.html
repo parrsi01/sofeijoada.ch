@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="{{ copy.html_lang }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ '#fccd01' if menu_page else '#dfb301' }}">
+    {% if menu_page %}
+    <meta name="description" content="SóFeijoada — {{ navigation.menu }}. Feijoada + {{ navigation.dessert }} : 27.– / 37.– / 44.–.">
+    {% else %}
+    <meta name="description" content="{{ copy.title }}. {{ copy.description }} {{ copy.tagline }}">
+    {% endif %}
+    <title>SóFeijoada — {{ navigation.menu if menu_page else copy.title }}</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css', v='2') }}">
+    {% for code, item in languages.items() %}
+    <link rel="alternate" hreflang="{{ item.html_lang }}" href="{{ url_for(page_endpoint, language=code) }}">
+    {% endfor %}
+    <link rel="alternate" hreflang="x-default" href="{{ url_for(page_endpoint, language='fr') }}">
+    <script src="{{ url_for('static', filename='site.js') }}" defer></script>
+  </head>
+  <body{% if menu_page %} class="food-menu-page"{% endif %}>
+    <header class="toolbar">
+      <nav class="page-tabs" aria-label="SóFeijoada">
+        <a href="{{ url_for('menu', language=language) }}"{% if not menu_page %} aria-current="page"{% endif %}>{{ navigation.home }}</a>
+        <a href="{{ url_for('food_menu', language=language) }}"{% if menu_page %} aria-current="page"{% endif %}>{{ navigation.menu }}</a>
+      </nav>
+      <details class="language-menu" id="language-menu">
+        <summary class="language-button" aria-label="{{ copy.choose }} — {{ copy.name }}">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <ellipse cx="12" cy="12" rx="4" ry="9"></ellipse>
+            <path d="M3 12h18M5 6.5h14M5 17.5h14"></path>
+          </svg>
+          <span>{{ copy.name }}</span>
+          <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m4 6 4 4 4-4"></path>
+          </svg>
+        </summary>
+        <nav class="language-panel" aria-label="{{ copy.choose }}">
+          <h2>{{ copy.choose }}</h2>
+          <ul class="language-list">
+            {% for code, item in languages.items() %}
+            <li>
+              <a href="{{ url_for(page_endpoint, language=code) }}" hreflang="{{ item.html_lang }}"{% if code == language %} aria-current="page"{% endif %}>
+                <span class="language-names">
+                  <span lang="{{ item.html_lang }}">{{ item.name }}</span>
+                  <small lang="en">{{ item.english }}</small>
+                </span>
+                {% if code == language %}
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>
+                {% endif %}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      </details>
+    </header>
+
+    <main class="site" id="main-content">
+      <h1 class="sr-only">SóFeijoada{% if menu_page %} — {{ navigation.menu }}{% endif %}</h1>
+      <figure class="poster">
+        <picture>
+          <source srcset="{{ url_for('static', filename='images/' ~ poster_file ~ '.webp') }}" type="image/webp">
+          {% if menu_page %}
+          <img class="poster-image" src="{{ url_for('static', filename='images/' ~ poster_file ~ '.png') }}"
+               width="{{ poster_width }}" height="{{ poster_height }}" fetchpriority="high" lang="fr"
+               alt="SóFeijoada. Coco-glacé/dulce le leche, crème brûlée maison. 1 feijoada + 1 dessert : 27.–. 2 feijoada + 1 dessert : 37.–. 2 feijoada + 2 dessert : 44.–.">
+          {% else %}
+          <img class="poster-image" src="{{ url_for('static', filename='images/' ~ poster_file ~ '.png') }}"
+               width="{{ poster_width }}" height="{{ poster_height }}" fetchpriority="high"
+               alt="SóFeijoada — {{ copy.title }}. {{ copy.tagline }}">
+          {% endif %}
+        </picture>
+        {% if not menu_page %}
+        <a class="poster-phone" href="{{ phone_url }}" aria-label="{{ copy.call }} {{ phone_display }}">
+          <span class="sr-only">{{ copy.call }} {{ phone_display }}</span>
+        </a>
+        {% endif %}
+      </figure>
+
+      <section class="contact" aria-label="SóFeijoada — {{ phone_display }}">
+        <a class="contact-button whatsapp" href="{{ whatsapp_url }}" target="_blank" rel="noopener noreferrer">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <path d="M20.5 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20.5l1.5-4.7a8.5 8.5 0 1 1 16-4.3Z"></path>
+            <path d="M8.3 7.5c-.8 1-.1 3.4 2 5.4 2 2.1 4.4 2.8 5.4 2l.7-1.3-2.5-1.1-.9.9c-1.3-.6-2.3-1.6-2.9-2.9l.9-.9-1.1-2.5Z"></path>
+          </svg>
+          <span>{{ copy.order }}</span>
+        </a>
+        <a class="contact-button phone" href="{{ phone_url }}">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+            <path d="m7 3 3 5-2 2c1.3 2.6 3.4 4.7 6 6l2-2 5 3c0 3-2 4-4 4C10 20 4 14 3 7c0-2 1-4 4-4Z"></path>
+          </svg>
+          <span>{{ copy.call }} <span class="phone-number">{{ phone_display }}</span></span>
+        </a>
+      </section>
+
+      <div class="menu-tools">
+        <details class="readable-menu">
+          <summary>{{ copy.read }} <span class="detail-sign" aria-hidden="true">+</span></summary>
+          <div class="menu-copy">
+            {% if menu_page %}
+            <h2>{{ navigation.menu }}</h2>
+            <ul lang="fr">
+              <li>Coco-glacé/dulce le leche</li>
+              <li>Crème brûlée maison</li>
+            </ul>
+            <dl class="prices bundle-prices">
+              <div><dt>1 Feijoada + 1 {{ navigation.dessert }}</dt><dd>27.–</dd></div>
+              <div><dt>2 Feijoada + 1 {{ navigation.dessert }}</dt><dd>37.–</dd></div>
+              <div><dt>2 Feijoada + 2 {{ navigation.desserts }}</dt><dd>44.–</dd></div>
+            </dl>
+            {% else %}
+            <h2>{{ copy.title }}</h2>
+            <p>{{ copy.description }}</p>
+            <p class="tagline">{{ copy.tagline }}</p>
+            <dl class="prices">
+              <div><dt>{{ copy.portion }}</dt><dd>20.–</dd></div>
+              <div><dt>PRO MAX 2 <small>{{ copy.serves }}</small></dt><dd>30.–</dd></div>
+            </dl>
+            <p class="collection">
+              {% if copy.pickup %}<span>{{ copy.pickup }}</span>{% endif %}
+              {% if copy.delivery %}<span>{{ copy.delivery }}</span>{% endif %}
+            </p>
+            <h3>{{ copy.payments }}</h3>
+            <p>TWINT · Wise · Apple Pay · Revolut · {{ copy.cash }} (USD / CHF / EUR) · {{ copy.cards }} (Mastercard / Visa / PostFinance)</p>
+            <p class="payment-note">{{ copy.ubs }}</p>
+            {% endif %}
+          </div>
+        </details>
+        <details class="qr-menu">
+          <summary>WhatsApp <span class="qr-label">QR</span></summary>
+          <div class="qr-content">
+            <a href="{{ whatsapp_url }}" target="_blank" rel="noopener noreferrer" aria-label="{{ copy.order }}">
+              <img src="{{ url_for('static', filename='images/whatsapp-code.webp') }}" width="715" height="642"
+                   loading="lazy" alt="{{ copy.scan }}">
+            </a>
+            <p>{{ copy.scan }}</p>
+          </div>
+        </details>
+      </div>
+
+      <footer class="footer">
+        <span>SóFeijoada · sofeijoada.ch</span>
+        <a href="{{ url_for('static', filename='images/' ~ poster_file ~ '.png') }}" target="_blank" rel="noopener noreferrer">{{ copy.large }} <span aria-hidden="true">↗</span></a>
+      </footer>
+    </main>
+  </body>
+</html>

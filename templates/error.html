@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ code }} — SóFeijoada</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{ url_for('static', filename='site.css', v='2') }}">
+  </head>
+  <body>
+    <main class="error-page">
+      <p class="error-brand">SóFeijoada</p>
+      <h1>{{ code }} — {{ message }}</h1>
+      <a class="contact-button whatsapp" href="{{ url_for('menu', language='fr') }}">Retour au menu</a>
+    </main>
+  </body>
+</html>

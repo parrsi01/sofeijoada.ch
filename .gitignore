@@ -49,6 +49,10 @@ build/
 dist/
 *.egg-info/
 
+# Local preview artifacts
+.preview/
+output/playwright/
+
 # Editor and operating-system files
 .DS_Store
 .idea/
